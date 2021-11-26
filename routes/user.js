@@ -9,6 +9,7 @@ router.get("/user", (req, res, next) => {
   });
 });
 
+
 // router.post("/product", authCheck, adminCheck, create);
 
 module.exports = router;
