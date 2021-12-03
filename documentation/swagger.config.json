@@ -1,0 +1,35 @@
+{
+  "definition": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Ecommerce API",
+      "version": "1.0.0",
+      "description": "An example for node course in Escalab Academy",
+      "termsOfService": "http://example.com/terms/",
+      "contact": {
+        "name": "Api Support",
+        "url": "https://escalab.academy/",
+        "email": "mchamorro@escalab.academy"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8001/api",
+        "description": "My API Documentation Developer Server"
+      },
+      {
+        "url": "http:2562333345667899.aws.amazon.com",
+        "description": "Production Server"
+      }
+    ],
+    "security": [{ "ApiKey": [] }],
+    "components": {
+      "ApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "authtoken"
+      }
+    }
+  },
+  "apis": ["./routes/*.js"]
+}
