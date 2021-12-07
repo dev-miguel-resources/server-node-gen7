@@ -6,7 +6,21 @@ const { create, productsCount, listAll, remove, remove2, read, update } = requir
 
 // routes-endpoints product
 router.post("/product", create);
+
+/**
+ * @swagger
+ * /products/total:
+ *   get:
+ *     tags:
+ *       - name: "Product"
+ *     summary: "All products Active"
+ *     responses:
+ *       200: 
+ *          description: ok   
+ */
 router.get("/products/total", productsCount);
+
+
 router.get("/products/:count", listAll); // products/50
 router.patch("/product/:slug", remove); // soft-delete
 router.delete("/product/:slug", remove2); // no soft-delete
