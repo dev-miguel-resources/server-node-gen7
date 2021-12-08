@@ -28,10 +28,12 @@
     ],
     "security": [{ "ApiKey": [] }],
     "components": {
-      "ApiKey": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "authtoken"
+      "securitySchemes": {
+        "ApiKey": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "authtoken"
+        }
       }
     }
   },
