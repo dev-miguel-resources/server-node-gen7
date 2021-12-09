@@ -8,10 +8,31 @@ const { create } = require("../controllers/category");
 
 // ROUTES - SWAGGER
 
+/**
+ * @swagger
+ * /category:
+ *   post:
+ *     summary: Create Category
+ *     tags: [Category]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Category"
+ *     responses:
+ *       200: 
+ *         description: ok
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Category"
+ *       400:
+ *         description: bad request     
+ */
 router.post("/category", create);
 
 module.exports = router;
-
 
 // SCHEMAS - SWAGGER
 

@@ -7,7 +7,6 @@ const { create, productsCount, listAll, remove, remove2, read, update } = requir
 // routes-endpoints product
 // ROUTES - SWAGGER
 
-
 router.post("/product", create);
 
 /**
