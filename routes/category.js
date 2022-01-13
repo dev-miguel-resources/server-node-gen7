@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+// middlewares
+const { authCheck, adminCheck } = require("../middlewares/auth");
+
 // controller middlewares
 const { create } = require("../controllers/category");
 
@@ -30,7 +33,7 @@ const { create } = require("../controllers/category");
  *       400:
  *         description: bad request     
  */
-router.post("/category", create);
+router.post("/category", authCheck, adminCheck, create);
 
 module.exports = router;
 
