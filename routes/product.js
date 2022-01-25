@@ -1,16 +1,19 @@
 const express = require("express");
 const router = express.Router();
 
-// middlewares
+// middlewares auth
 const { authCheck, adminCheck } = require("../middlewares/auth");
 
-// controller middlewares
+// middlewares validators
+const { validateCreateProduct, validateUpdateProduct } = require("../validators/product");
+
+// middlewares controller
 const { create, productsCount, listAll, remove, remove2, read, update } = require("../controllers/product");
 
 // routes-endpoints product
 // ROUTES - SWAGGER
 
-router.post("/product", authCheck, adminCheck, create);
+router.post("/product", authCheck, adminCheck, validateCreateProduct, create);
 
 /**
  * @swagger
@@ -48,7 +51,7 @@ router.get("/products/:count", listAll); // products/50
 router.patch("/product/:slug", authCheck, adminCheck, remove); // soft-delete
 router.delete("/product/:slug", authCheck, adminCheck, remove2); // no soft-delete
 router.get("/product/:slug", read);
-router.put("/product/:slug", authCheck, adminCheck, update);
+router.put("/product/:slug", authCheck, adminCheck, validateUpdateProduct, update);
 
 module.exports = router;
 
