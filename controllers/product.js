@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const slugify = require("slugify");
+const { GET_ASYNC, SET_ASYNC } = require("../redis/index");
 
 // exports middlewares: lógica de negocio
 exports.create = async (req, res) => {
@@ -88,3 +89,5 @@ exports.update = async (req, res) => {
     });
   }
 };
+
+
