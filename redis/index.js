@@ -11,6 +11,10 @@ client.on("error", function(error) {
     console.log(error);
 });
 
+client.on('connect', function (err) {
+    console.log('Connected to redis successfully');
+});
+
 // Adding promisifying
 const GET_ASYNC = promisify(client.get).bind(client);
 const SET_ASYNC = promisify(client.get).bind(client);

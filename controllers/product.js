@@ -63,11 +63,33 @@ exports.remove2 = async (req, res) => {
 };
 
 exports.read = async (req, res) => {
-  const product = await Product.findOne({
-    slug: req.params.slug,
-    status: "Active",
-  }).exec();
-  res.json(product);
+  try {
+    const reply = await GET_ASYNC(req.params.slug);
+    if (reply) {
+      console.log("using cached data");
+      return res.send(JSON.parse(reply));
+    }
+
+    const product = await Product.findOne({ slug: req.params.slug, status: "Active" })
+      .populate("category")
+      .exec();
+
+    if (!product) {
+      return res.status(404).json({ msg: "The product do not exist." });
+    }
+
+    const saveResult = await SET_ASYNC(
+      req.params.slug,
+      JSON.stringify(product),
+      "EX",
+      15
+    );
+
+    console.log("saved data:", saveResult);
+    res.json(product);
+  } catch (err) {
+    res.send(err.message);
+  }
 };
 
 exports.update = async (req, res) => {
@@ -89,5 +111,3 @@ exports.update = async (req, res) => {
     });
   }
 };
-
-
