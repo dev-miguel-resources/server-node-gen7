@@ -8,7 +8,7 @@ const { authCheck, adminCheck } = require("../middlewares/auth");
 const { validateCreateProduct, validateUpdateProduct } = require("../validators/product");
 
 // middlewares controller
-const { create, productsCount, listAll, remove, remove2, read, update } = require("../controllers/product");
+const { create, productsCount, listAll, remove, remove2, read, update, list } = require("../controllers/product");
 
 // routes-endpoints product
 // ROUTES - SWAGGER
@@ -52,6 +52,7 @@ router.patch("/product/:slug", authCheck, adminCheck, remove); // soft-delete
 router.delete("/product/:slug", authCheck, adminCheck, remove2); // no soft-delete
 router.get("/product/:slug", read);
 router.put("/product/:slug", authCheck, adminCheck, validateUpdateProduct, update);
+router.post("/products", list);
 
 module.exports = router;
 

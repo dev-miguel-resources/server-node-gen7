@@ -62,6 +62,14 @@ exports.remove2 = async (req, res) => {
   }
 };
 
+// read normal
+/*exports.read = async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug, status: "Active" })
+    .exec();
+  res.json(product);
+};*/
+
+// read with redis
 exports.read = async (req, res) => {
   try {
     const reply = await GET_ASYNC(req.params.slug);
@@ -70,7 +78,10 @@ exports.read = async (req, res) => {
       return res.send(JSON.parse(reply));
     }
 
-    const product = await Product.findOne({ slug: req.params.slug, status: "Active" })
+    const product = await Product.findOne({
+      slug: req.params.slug,
+      status: "Active",
+    })
       .populate("category")
       .exec();
 
@@ -82,7 +93,7 @@ exports.read = async (req, res) => {
       req.params.slug,
       JSON.stringify(product),
       "EX",
-      15
+      60
     );
 
     console.log("saved data:", saveResult);
@@ -111,3 +122,45 @@ exports.update = async (req, res) => {
     });
   }
 };
+
+// list pagination with redis
+exports.list = async (req, res) => {
+  console.table(req.body);
+  try {
+    //createdAt/updatedAt, desc/asc, 3
+    const { sort, order, page } = req.body;
+    const currentPage = page | 1;
+    const perPage = 3; // 3
+
+    // Search Data in Redis
+    const reply = await GET_ASYNC(req.originalUrl);
+    // const reply = await GET_ASYNC("products");
+    console.log("using cached data");
+
+    // if exists
+    if (reply) return res.send(JSON.parse(reply));
+
+    const products = await Product.find({ status: "Active" })
+      .skip((currentPage - 1) * perPage)
+      .populate("category")
+      .sort([[sort, order]])
+      .limit(perPage)
+      .exec();
+
+    if (!products)
+      res.status(404).send("Not Found products with status active");
+
+    const saveResult = await SET_ASYNC(
+      req.originalUrl,
+      JSON.stringify(products),
+      "EX",
+      60
+    );
+
+    console.log("saved data:", saveResult);
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
